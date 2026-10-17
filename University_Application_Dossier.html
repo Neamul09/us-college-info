@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BDtoUSA: University Application Requirements Dossier & Notebook (Fall 2027)</title>
+  <!-- SEO & Social Sharing (Open Graph & Twitter Cards) -->
+  <meta name="description" content="Tactical application requirements dossier for 160 U.S. colleges: exact checklists for application fees, testing, transcripts, LORs, supplemental essays, and CDS H6 aid.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BDtoUSA: University Application Requirements Dossier (Fall 2027)">
+  <meta property="og:description" content="Detailed institutional application checklists, supplemental essays, CDS H6 international funding stats, and INA § 214(b) visa ratings for 160 colleges.">
+  <meta property="og:url" content="https://neamul09.github.io/us-college-info/University_Application_Dossier.html">
+  <meta property="og:image" content="https://neamul09.github.io/us-college-info/bdtousa_admissions_navigator.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BDtoUSA: University Application Requirements Dossier">
+  <meta name="twitter:description" content="Detailed institutional application checklists, supplemental essays, and CDS H6 aid stats for 160 colleges.">
+  <meta name="twitter:image" content="https://neamul09.github.io/us-college-info/bdtousa_admissions_navigator.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
   <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -115,6 +127,10 @@
           <a href="US_Colleges_Fall_2027_Full_Ride_BDtoUSA.xlsx" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition shadow-sm">
             <i class="fa-solid fa-file-excel"></i> Excel (.xlsx)
           </a>
+
+          <button onclick="copyShareLink()" id="shareBtnDossier" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold hover:from-blue-500 hover:to-indigo-500 transition shadow-sm">
+            <i class="fa-solid fa-share-nodes"></i> <span id="shareBtnDossierText">Share Dossier</span>
+          </button>
 
           <button onclick="exportMarkdownChecklist()" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-300 bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200 transition" title="Export Selected as Markdown">
             <i class="fa-solid fa-file-lines"></i> Export MD
@@ -19707,6 +19723,24 @@
 
       updateShortlistCount();
       filterAndRender();
+    }
+
+    function copyShareLink() {
+      const url = window.location.href.split('#')[0];
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = document.getElementById('shareBtnDossierText');
+          if (btn) {
+            const old = btn.innerText;
+            btn.innerText = 'Copied!';
+            setTimeout(() => { btn.innerText = old; }, 2200);
+          }
+        }).catch(() => {
+          prompt('Copy this link to share the Application Requirements Dossier:', url);
+        });
+      } else {
+        prompt('Copy this link to share the Application Requirements Dossier:', url);
+      }
     }
 
     function toggleShortlistView() {
