@@ -2,8 +2,8 @@
 
 > **Verified Database & Strategic Dossier of 160 U.S. Universities Offering Full Rides ($0 EFC), Need-Blind Financial Aid, and Full-Tuition Merit Scholarships for Bangladeshi & International Undergraduates.**
 
-[![Deploy GitHub Pages](https://github.com/Neamul09/us-college-info/actions/workflows/pages.yml/badge.svg)](https://github.com/Neamul09/us-college-info/actions/workflows/pages.yml)
-[![Live Site](https://img.shields.io/badge/GitHub%20Pages-Live%20Portal-success?style=flat&logo=github)](https://neamul09.github.io/us-college-info/)
+[![Pages Status](https://img.shields.io/badge/GitHub%20Pages-Active-brightgreen?style=flat&logo=github)](https://neamul09.github.io/us-college-info/)
+[![Live Site](https://img.shields.io/badge/Deployment-Live%20Portal-success?style=flat&logo=vercel)](https://neamul09.github.io/us-college-info/)
 [![Colleges](https://img.shields.io/badge/Verified%20Institutions-160-blue?style=flat)](https://neamul09.github.io/us-college-info/)
 [![CDS Verified](https://img.shields.io/badge/Common%20Data%20Set-CDS%20Sec.%20C9%20%26%20H6-purple?style=flat)](https://neamul09.github.io/us-college-info/)
 
