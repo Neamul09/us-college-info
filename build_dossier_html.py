@@ -158,6 +158,56 @@ html_content = """<!DOCTYPE html>
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
+    <!-- CRITICAL TIMELINE & DEADLINE ALERT BANNER -->
+    <section class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-indigo-500/30">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        
+        <!-- Left: Alert Header & Core Dates -->
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-500 text-white uppercase tracking-wider animate-pulse">
+              <i class="fa-solid fa-circle-exclamation"></i> Urgent Action Timeline
+            </span>
+            <span class="text-xs font-semibold text-indigo-300">Fall 2027 Admission Cycle Critical Milestones</span>
+          </div>
+          <h2 class="text-base sm:text-lg font-black tracking-tight text-white">
+            Upcoming Deadlines: Nov 1 Early Rounds • Nov 20 SAT Score Drop • Dec 1 Merit Full Rides
+          </h2>
+          <p class="text-xs text-slate-300 leading-relaxed max-w-4xl">
+            <strong>Tactical Strategy for Bangladeshi Applicants:</strong> For <strong>Nov 1/15 Early Action & ED1</strong>, apply test-optional if needed to protect your application. When the <strong>Nov 7 SAT scores release on Nov 20</strong>, immediately upload your score report PDF to the applicant portal if <span class="text-amber-300 font-bold font-mono">1520+</span>! For <strong>Dec 1 Merit Scholarships</strong>, scores will be in hand 10 days before deadlines.
+          </p>
+        </div>
+
+        <!-- Right: 3 Milestone Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 lg:w-auto w-full text-xs">
+          <div class="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] text-rose-400 font-bold uppercase block tracking-wider">Round 1 Priority</span>
+              <span class="text-sm font-black text-white font-mono">NOV 1 – 15</span>
+            </div>
+            <p class="text-[10px] text-slate-300 mt-1">EA & ED1 (Bowdoin, Harvard, MIT, Colby)</p>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-indigo-900/60 border border-indigo-500/50 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] text-amber-300 font-bold uppercase block tracking-wider">Score Drop</span>
+              <span class="text-sm font-black text-amber-300 font-mono">NOV 20</span>
+            </div>
+            <p class="text-[10px] text-indigo-200 mt-1">Nov 7 SAT Scores Release to Portals</p>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-emerald-900/60 border border-emerald-500/50 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] text-emerald-300 font-bold uppercase block tracking-wider">Premier Merit</span>
+              <span class="text-sm font-black text-emerald-300 font-mono">DEC 1</span>
+            </div>
+            <p class="text-[10px] text-emerald-200 mt-1">BU Trustee, Richmond Scholars, UT Dallas</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- INTERACTIVE FILTER SECTION -->
     <section id="filterSection" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
       
