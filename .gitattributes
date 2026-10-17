@@ -1,0 +1,18 @@
+# Treat binary files as binary to prevent line-ending conversion
+*.pdf binary
+*.xlsx binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.ico binary
+
+# Ensure consistent line endings for text assets
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

@@ -1,0 +1,18 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+Lib/
+Scripts/
+pyvenv.cfg
