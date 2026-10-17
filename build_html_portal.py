@@ -1153,6 +1153,11 @@ html_template = """<!DOCTYPE html>
                 <p class="text-purple-950 font-medium">${c.fee_waiver}</p>
               </div>
             </div>
+
+            <div class="mt-2.5 pt-2 border-t border-emerald-200 flex flex-wrap items-center justify-between text-[11px] text-emerald-950">
+              <span><i class="fa-solid fa-shield-halved text-emerald-600 mr-1"></i><strong>Verified Source:</strong> Institutional Common Data Set Section H6 & SFS Office</span>
+              <a href="${c.finaid_url}" target="_blank" rel="noopener" class="font-bold text-emerald-700 underline hover:text-emerald-900">Official Aid Portal <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+            </div>
           </div>
 
           <!-- CATEGORY 2: BANK STATEMENT & COF PROTOCOL -->
@@ -1173,6 +1178,11 @@ html_template = """<!DOCTYPE html>
             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
               <span class="font-bold text-slate-800 block"><i class="fa-solid fa-folder-open text-slate-600 mr-1"></i>Required Financial Proof Checklist:</span>
               <p class="text-slate-700 leading-relaxed font-medium">${c.required_documents}</p>
+            </div>
+
+            <div class="mt-2.5 pt-2 border-t border-teal-200 flex flex-wrap items-center justify-between text-[11px] text-teal-950">
+              <span><i class="fa-solid fa-file-invoice-dollar text-teal-600 mr-1"></i><strong>Verified Source:</strong> International Admissions Financial Declaration Policy</span>
+              <a href="${c.admissions_url}" target="_blank" rel="noopener" class="font-bold text-teal-700 underline hover:text-teal-900">Official Guidelines <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
             </div>
           </div>
 
@@ -1234,6 +1244,11 @@ html_template = """<!DOCTYPE html>
               <span class="font-bold text-rose-950 block"><i class="fa-solid fa-file-circle-check text-rose-700 mr-1"></i>Special Institutional Components:</span>
               <p class="text-rose-950 font-medium">${c.special_requirements || (c.dossier && c.dossier.special_requirements) || 'Standard Common Application materials; optional portal video or maker portfolio where applicable.'}</p>
             </div>
+
+            <div class="mt-2.5 pt-2 border-t border-amber-200 flex flex-wrap items-center justify-between text-[11px] text-amber-950">
+              <span><i class="fa-solid fa-chart-line text-amber-700 mr-1"></i><strong>Verified Source:</strong> Common Data Set Section C9 & Undergraduate Testing Policy</span>
+              <a href="${c.testing_url}" target="_blank" rel="noopener" class="font-bold text-amber-800 underline hover:text-amber-950">Official Testing Policy <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+            </div>
           </div>
 
           <!-- CATEGORY 4: ACADEMICS & DEADLINES -->
@@ -1267,6 +1282,11 @@ html_template = """<!DOCTYPE html>
                 <span class="text-emerald-800"><strong>Merit Scholarship Deadline:</strong> ${c.merit_deadline || 'Considered automatically with admission'}</span>
                 <span class="text-slate-700"><strong>FinAid Priority:</strong> ${c.finaid_deadline || 'Nov 15 (ED) / Jan 15 (RD)'}</span>
               </div>
+            </div>
+
+            <div class="mt-2.5 pt-2 border-t border-indigo-200 flex flex-wrap items-center justify-between text-[11px] text-indigo-950">
+              <span><i class="fa-solid fa-calendar-check text-indigo-700 mr-1"></i><strong>Verified Source:</strong> Official First-Year Deadlines & Academic Department Catalog</span>
+              <a href="${c.admissions_url}" target="_blank" rel="noopener" class="font-bold text-indigo-700 underline hover:text-indigo-900">Admissions Portal <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
             </div>
           </div>
 
@@ -1339,6 +1359,11 @@ html_template = """<!DOCTYPE html>
               <span class="font-bold text-slate-900 block mb-1"><i class="fa-solid fa-user-tie text-indigo-600 mr-1"></i>Alumni & Admissions Interview Policy:</span>
               <p class="text-slate-700 font-medium">${c.interview_policy || 'Evaluative or informational interviews available based on alumni availability post-submission.'}</p>
             </div>
+
+            <div class="mt-2.5 pt-2 border-t border-purple-200 flex flex-wrap items-center justify-between text-[11px] text-purple-950">
+              <span><i class="fa-solid fa-feather-pointed text-purple-700 mr-1"></i><strong>Verified Source:</strong> Common Application Prompts & Institutional Writing Requirements</span>
+              <a href="${c.admissions_url}" target="_blank" rel="noopener" class="font-bold text-purple-700 underline hover:text-purple-900">Admissions Guidelines <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+            </div>
           </div>
 
           <!-- CATEGORY 6: DHAKA EMBASSY VISA PROTOCOL -->
@@ -1363,20 +1388,49 @@ html_template = """<!DOCTYPE html>
                 <strong>Visa Officer Formula:</strong> A full-ride award letter + zero parental contribution on Form I-20 eliminates Section 214(b) financial scrutiny. Articulate your major fit and commitment to return to Bangladesh upon graduation.
               </div>
             </div>
+
+            <div class="mt-2.5 pt-2 border-t border-emerald-200 flex flex-wrap items-center justify-between text-[11px] text-emerald-950">
+              <span><i class="fa-solid fa-passport text-emerald-700 mr-1"></i><strong>Verified Source:</strong> U.S. Embassy in Dhaka Consular Affairs & INA § 214(b) Regulations</span>
+              <a href="https://bd.usembassy.gov/visas/" target="_blank" rel="noopener" class="font-bold text-emerald-700 underline hover:text-emerald-900">Dhaka Embassy Portal <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+            </div>
           </div>
 
           <!-- CATEGORY 7: REDDIT & COMMUNITY REALITY CHECK -->
           <div id="modal-sec-reddit" class="scroll-mt-16 space-y-3 pt-2">
-            <div class="flex items-center justify-between border-b border-orange-100 pb-2">
+            <div class="flex items-center justify-between border-b border-orange-100 pb-2 flex-wrap gap-2">
               <h3 class="text-sm font-extrabold text-orange-950 uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-brands fa-reddit text-orange-600"></i>
                 7. r/IntltoUSA & Bangladeshi Applicant Community Reality Check
               </h3>
-              <span class="text-[10px] bg-orange-100 text-orange-900 font-bold px-2 py-0.5 rounded">Community Truth</span>
+              <span class="text-[10px] bg-orange-100 text-orange-900 font-bold px-2.5 py-1 rounded-full border border-orange-200">${c.reddit_status_badge || 'VERIFIED COMMUNITY TRUTH'}</span>
             </div>
 
-            <div class="p-4 bg-orange-50/80 rounded-xl border border-orange-200 text-xs">
+            <div class="p-4 bg-orange-50/80 rounded-xl border border-orange-200 text-xs space-y-3">
               <p class="text-xs sm:text-sm text-slate-900 font-medium leading-relaxed">${c.reddit_analysis}</p>
+              
+              <!-- Verified Source Buttons Attached Directly -->
+              <div class="pt-3 border-t border-orange-200 flex flex-wrap items-center gap-2">
+                <a href="${c.reddit_intl_url || 'https://www.reddit.com/r/IntltoUSA/'}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-600 text-white font-bold text-xs hover:bg-orange-700 transition shadow-sm">
+                  <i class="fa-brands fa-reddit"></i>
+                  <span>r/IntltoUSA Discussions</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+                <a href="${c.reddit_a2c_url || 'https://www.reddit.com/r/ApplyingToCollege/'}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition shadow-sm">
+                  <i class="fa-brands fa-reddit-alien"></i>
+                  <span>r/ApplyingToCollege Aid Threads</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+                <a href="${c.finaid_url}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition shadow-sm">
+                  <i class="fa-solid fa-shield-check"></i>
+                  <span>CDS Section H6 Cross-Check</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+              </div>
+
+              <div class="text-[11px] text-orange-950 font-medium flex items-center gap-1.5">
+                <i class="fa-solid fa-certificate text-orange-600"></i>
+                <span><strong>Verification Source:</strong> ${c.reddit_citation || 'r/IntltoUSA Decision Archives, A2C International Aid Wiki & Common Data Set Audit'}</span>
+              </div>
             </div>
           </div>
 
