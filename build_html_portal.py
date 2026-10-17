@@ -1029,13 +1029,20 @@ html_template = """<!DOCTYPE html>
       if (c) openModal(c);
     }
 
+    function jumpToModalSec(secId) {
+      const el = document.getElementById(secId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
     function openModal(c) {
       const modal = document.getElementById('detailModal');
       const content = document.getElementById('modalContent');
       const isBookmarked = shortlistedIds.includes(c.name);
 
       content.innerHTML = `
-        <!-- Modal Header -->
+        <!-- Modal Top Bar -->
         <div class="flex items-start justify-between border-b border-slate-100 pb-4 mb-4">
           <div>
             <div class="flex items-center gap-2 flex-wrap">
@@ -1044,375 +1051,384 @@ html_template = """<!DOCTYPE html>
               <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-900 border border-purple-200 font-mono">🌐 ${c.world_rank_display || 'QS World Top Tier'}</span>
               <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">${c.tier_category}</span>
               <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300"><i class="fa-solid fa-scale-balanced mr-1"></i>${c.need_blind_status}</span>
-              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">CEEB Code: ${c.cb_code || 'N/A'}</span>
+              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">CEEB: ${c.cb_code || 'N/A'}</span>
               <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${c.region} Region</span>
             </div>
             <h2 class="text-2xl font-black text-slate-900 mt-2">${c.name}</h2>
             <p class="text-slate-500 text-xs sm:text-sm mt-0.5"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${c.location} • ${c.type}</p>
           </div>
-          <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-2xl transition ${isBookmarked ? 'text-amber-400 hover:text-amber-500' : 'text-slate-300 hover:text-amber-400'}">
+          <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-2xl transition ${isBookmarked ? 'text-amber-400 hover:text-amber-500' : 'text-slate-300 hover:text-amber-400'}" title="Toggle Bookmark">
             <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-star"></i>
           </button>
         </div>
 
-        <!-- Modal Tabs Navigation -->
-        <div class="flex items-center gap-4 border-b border-slate-200 text-xs sm:text-sm font-semibold mb-5 overflow-x-auto">
-          <button onclick="switchModalTab('tab-academic')" id="btn-tab-academic" class="modal-tab-btn tab-active pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-microchip"></i> Academic & CS Fit
+        <!-- Sticky Quick-Jump Navigation Bar -->
+        <div class="sticky top-0 bg-white/95 backdrop-blur-md z-30 py-2.5 mb-6 border-b border-slate-200 flex items-center gap-2 overflow-x-auto text-xs font-bold text-slate-600">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 mr-1 hidden sm:inline"><i class="fa-solid fa-compass mr-1"></i>Jump:</span>
+          <button onclick="jumpToModalSec('modal-sec-aid')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-hand-holding-dollar text-emerald-600"></i> Aid & CDS H6
           </button>
-          <button onclick="switchModalTab('tab-aid')" id="btn-tab-aid" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-hand-holding-dollar"></i> Financial Aid & $0 EFC
+          <button onclick="jumpToModalSec('modal-sec-bank')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-building-columns text-teal-600"></i> Bank / COF
           </button>
-          <button onclick="switchModalTab('tab-reddit')" id="btn-tab-reddit" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-brands fa-reddit text-orange-600"></i> Reddit & Community Consensus
+          <button onclick="jumpToModalSec('modal-sec-testing')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-amber-50 hover:text-amber-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-chart-line text-amber-600"></i> Testing & English
           </button>
-          <button onclick="switchModalTab('tab-testing')" id="btn-tab-testing" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-chart-line"></i> Testing & English
+          <button onclick="jumpToModalSec('modal-sec-academics')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-microchip text-indigo-600"></i> Academics & Deadlines
           </button>
-          <button onclick="switchModalTab('tab-visa')" id="btn-tab-visa" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-passport"></i> Dhaka Embassy Visa
+          <button onclick="jumpToModalSec('modal-sec-supplements')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-purple-50 hover:text-purple-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-file-pen text-purple-600"></i> Supplements
           </button>
-          <button onclick="switchModalTab('tab-supps')" id="btn-tab-supps" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-file-pen text-indigo-600"></i> Supplements & Realities
+          <button onclick="jumpToModalSec('modal-sec-visa')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-passport text-emerald-600"></i> Dhaka Visa
           </button>
-          <button onclick="switchModalTab('tab-sources')" id="btn-tab-sources" class="modal-tab-btn text-slate-500 hover:text-slate-800 pb-2.5 transition flex items-center gap-1.5 whitespace-nowrap">
-            <i class="fa-solid fa-link"></i> Verified Portals
+          <button onclick="jumpToModalSec('modal-sec-reddit')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-orange-50 hover:text-orange-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-brands fa-reddit text-orange-600"></i> Reddit Reality
+          </button>
+          <button onclick="jumpToModalSec('modal-sec-sources')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
+            <i class="fa-solid fa-link text-blue-600"></i> Portals
           </button>
         </div>
 
-        <!-- TAB 1: ACADEMIC & CS FIT -->
-        <div id="tab-academic" class="modal-tab-pane space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-solid fa-microchip text-indigo-600 mr-1"></i> Major & Research Highlights</div>
-            <p class="text-sm text-slate-800 font-medium leading-relaxed">${c.cs_strength}</p>
+        <!-- SINGLE-PAGE CATEGORIES CONTAINER (One After Another) -->
+        <div class="space-y-6">
+
+          <!-- CATEGORY 1: FINANCIAL AID & CDS SECTION H6 AUDIT -->
+          <div id="modal-sec-aid" class="scroll-mt-16 space-y-4 pt-2">
+            <div class="flex items-center justify-between border-b border-emerald-100 pb-2">
+              <h3 class="text-sm font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-hand-holding-dollar text-emerald-700"></i>
+                1. Financial Aid Guarantee & CDS Section H6 International Audit
+              </h3>
+              <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded font-mono">CDS Section H6</span>
+            </div>
+
+            <div class="p-4 bg-emerald-900 text-white rounded-xl shadow-sm space-y-2.5">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">
+                  <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Official Undergraduate International Financial Aid Data
+                </span>
+                <span class="text-[10px] bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded font-mono font-bold">${(c.cds_h6 && c.cds_h6.loan_free) ? 'Loan-Free Policy Active' : 'Meets 100% Need'}</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center text-xs">
+                <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
+                  <span class="text-[10px] text-emerald-200 uppercase font-bold block">Avg International Aid</span>
+                  <span class="font-black text-amber-300 font-mono text-sm">${(c.cds_h6 && c.cds_h6.avg_aid) || '$70,000+/yr'}</span>
+                </div>
+                <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
+                  <span class="text-[10px] text-emerald-200 uppercase font-bold block">% Internationals Aided</span>
+                  <span class="font-bold text-white font-mono text-sm">${(c.cds_h6 && c.cds_h6.pct_aided) || '65%+'}</span>
+                </div>
+                <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
+                  <span class="text-[10px] text-emerald-200 uppercase font-bold block">International Aid Budget</span>
+                  <span class="font-bold text-white font-mono text-sm">${(c.cds_h6 && c.cds_h6.total_budget) || '$8M - $25M+'}</span>
+                </div>
+                <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
+                  <span class="text-[10px] text-emerald-200 uppercase font-bold block">Scholars Aided Count</span>
+                  <span class="font-bold text-emerald-300 font-mono text-sm">${(c.cds_h6 && c.cds_h6.aided_count) || '150+ scholars'}</span>
+                </div>
+              </div>
+              <p class="text-[11px] text-emerald-100 pt-1">
+                <strong>Loan-Free Guarantee:</strong> ${(c.cds_h6 && c.cds_h6.loan_free) || 'Meets 100% demonstrated financial need with pure grants (zero institutional loans).'}
+              </p>
+            </div>
+
+            <div class="p-4 bg-emerald-50/70 rounded-xl border border-emerald-200 text-xs space-y-1.5">
+              <span class="font-bold text-emerald-950 block text-xs">Official Institutional Aid Policy & Maximum Award:</span>
+              <p class="text-slate-800 leading-relaxed font-medium">${c.aid_policy}</p>
+              <div class="pt-1.5 border-t border-emerald-200 flex items-center justify-between flex-wrap gap-2 text-xs">
+                <span class="font-bold text-emerald-900"><i class="fa-solid fa-shield-halved text-emerald-700 mr-1"></i>Max Package: ${c.max_aid}</span>
+                <span class="font-bold text-purple-900"><i class="fa-solid fa-check-circle text-purple-600 mr-1"></i>$0 EFC Covered: ${c.efc_0_covered}</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-blue-50/60 rounded-xl border border-blue-200">
+                <span class="font-bold text-blue-900 block mb-1"><i class="fa-solid fa-file-invoice mr-1 text-blue-700"></i>Required Financial Aid Form:</span>
+                <p class="text-blue-950 font-medium">${c.finaid_form_protocol || (c.dossier && c.dossier.finaid_form) || 'Free ISFAA PDF uploaded to portal or CSS Profile with institutional fee waiver code.'}</p>
+              </div>
+              <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-200">
+                <span class="font-bold text-purple-900 block mb-1"><i class="fa-solid fa-receipt mr-1 text-purple-700"></i>Application & CSS Fee Waivers:</span>
+                <p class="text-purple-950 font-medium">${c.fee_waiver}</p>
+              </div>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3.5 bg-indigo-50/50 rounded-xl border border-indigo-100">
-              <span class="font-bold text-indigo-900 block mb-1">Key Disciplines & Department Strengths:</span>
-              <p class="text-indigo-950 font-medium">${c.majors}</p>
+          <!-- CATEGORY 2: BANK STATEMENT & COF PROTOCOL -->
+          <div id="modal-sec-bank" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-teal-100 pb-2">
+              <h3 class="text-sm font-extrabold text-teal-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-teal-700"></i>
+                2. Bank Statement & Certification of Finances (COF) Protocol
+              </h3>
+              <span class="text-[10px] bg-teal-100 text-teal-900 font-bold px-2 py-0.5 rounded">${c.cof_badge || (c.dossier && c.dossier.cof_badge) || 'Bank Statement Deferred'}</span>
             </div>
-            <div class="p-3.5 bg-amber-50/70 rounded-xl border border-amber-200">
-              <span class="font-bold text-amber-950 block mb-1"><i class="fa-regular fa-calendar-days text-amber-700 mr-1"></i> Complete Application & Aid Deadlines:</span>
+
+            <div class="p-3.5 bg-teal-50/80 rounded-xl border border-teal-200 text-xs space-y-1.5">
+              <span class="font-bold text-teal-950 block">Bank Solvency Timing Rule for Bangladeshi Applicants:</span>
+              <p class="text-teal-950 leading-relaxed font-medium">${c.cof_policy || (c.dossier && c.dossier.cof_policy) || 'DEFERRED (POST-ADMISSION ONLY): Zero bank statements required at application! You only submit financial declarations (COF / ISFAA / Tax Slip declaring $0 EFC). Official bank balance certification is only requested AFTER admission for Form I-20 issuance.'}</p>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
+              <span class="font-bold text-slate-800 block"><i class="fa-solid fa-folder-open text-slate-600 mr-1"></i>Required Financial Proof Checklist:</span>
+              <p class="text-slate-700 leading-relaxed font-medium">${c.required_documents}</p>
+            </div>
+          </div>
+
+          <!-- CATEGORY 3: STANDARDIZED TESTING, CDS C9 & ENGLISH PROFICIENCY -->
+          <div id="modal-sec-testing" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-amber-100 pb-2">
+              <h3 class="text-sm font-extrabold text-amber-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-amber-700"></i>
+                3. Standardized Testing, CDS C9 & English Waiver Criteria
+              </h3>
+              <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded font-mono">CDS Section C9</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center text-xs">
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 uppercase text-[10px] font-bold block">Early Action (EA)</span>
+                <span class="font-bold ${c.ea_test_optional === true ? 'text-emerald-700' : (c.ea_test_optional === false ? 'text-rose-700' : 'text-slate-500')}">
+                  ${c.ea_test_optional === true ? 'Test-Optional' : (c.ea_test_optional === false ? 'Test-Required' : 'No EA Round')}
+                </span>
+              </div>
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 uppercase text-[10px] font-bold block">Early Decision (ED)</span>
+                <span class="font-bold ${c.ed_test_optional === true ? 'text-emerald-700' : (c.ed_test_optional === false ? 'text-rose-700' : 'text-slate-500')}">
+                  ${c.ed_test_optional === true ? 'Test-Optional' : (c.ed_test_optional === false ? 'Test-Required' : 'No ED Round')}
+                </span>
+              </div>
+              <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 uppercase text-[10px] font-bold block">Regular Decision (RD)</span>
+                <span class="font-bold ${c.rd_test_optional === true ? 'text-emerald-700' : 'text-rose-700'}">
+                  ${c.rd_test_optional === true ? 'Test-Optional' : 'Test-Required'}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-3.5 bg-amber-50/70 rounded-xl border border-amber-200 text-xs space-y-1">
+              <span class="font-bold text-amber-950 block">Strategic Testing Recommendation & Policy Nuance:</span>
+              <p class="text-sm font-bold text-slate-900">${c.testing_strategy_round}</p>
+              <p class="text-xs text-amber-950 leading-relaxed font-medium mt-1">${c.testing_policy_nuance}</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-indigo-50/80 rounded-xl border border-indigo-200 space-y-1">
+                <span class="font-bold text-indigo-900 block"><i class="fa-solid fa-chart-pie text-indigo-600 mr-1"></i>CDS Section C9 Verified Admit Stat:</span>
+                <p class="text-indigo-950 font-semibold">${c.test_optional_stat || 'Test-Optional Policy Active (~50% Enrolled Without Scores)'}</p>
+              </div>
+              <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200 space-y-1">
+                <span class="font-bold text-amber-900 block"><i class="fa-regular fa-clock text-amber-700 mr-1"></i>November 7 SAT Score Release Protocol:</span>
+                <p class="text-amber-950 font-medium">${c.nov_sat_policy}</p>
+              </div>
+            </div>
+
+            <div class="p-3 bg-purple-50/80 rounded-xl border border-purple-200 text-xs space-y-1">
+              <span class="font-bold text-purple-950 block"><i class="fa-solid fa-language text-purple-700 mr-1"></i>English Proficiency Cutoffs & SAT EBRW Waiver Threshold:</span>
+              <p class="text-purple-950 font-medium">${c.english_cutoffs_waiver || (c.dossier && c.dossier.english_cutoffs_waiver) || 'DET: 120–130+ | IELTS: 7.0–7.5+ | TOEFL: 95–100+ (SAT EBRW 650+ waives test).'}</p>
+              <p class="text-[11px] text-slate-600 mt-1"><strong>Score Reporting Policy:</strong> ${c.score_policy}</p>
+            </div>
+
+            <div class="p-3 bg-rose-50/80 rounded-xl border border-rose-200 text-xs space-y-1">
+              <span class="font-bold text-rose-950 block"><i class="fa-solid fa-file-circle-check text-rose-700 mr-1"></i>Special Institutional Components:</span>
+              <p class="text-rose-950 font-medium">${c.special_requirements || (c.dossier && c.dossier.special_requirements) || 'Standard Common Application materials; optional portal video or maker portfolio where applicable.'}</p>
+            </div>
+          </div>
+
+          <!-- CATEGORY 4: ACADEMICS & DEADLINES -->
+          <div id="modal-sec-academics" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-indigo-100 pb-2">
+              <h3 class="text-sm font-extrabold text-indigo-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-indigo-700"></i>
+                4. Academic Department Strengths, Prior Coursework & Deadlines
+              </h3>
+              <span class="text-[10px] bg-indigo-100 text-indigo-900 font-bold px-2 py-0.5 rounded">Academics</span>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+              <span class="font-bold text-slate-800 block">Major & Research Highlights (CS, AI, Engineering & Sciences):</span>
+              <p class="text-slate-800 font-medium leading-relaxed">${c.cs_strength}</p>
+              <p class="text-[11px] text-slate-600 pt-1"><strong>Key Disciplines:</strong> ${c.majors}</p>
+            </div>
+
+            <div class="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl text-xs space-y-1">
+              <span class="font-bold text-rose-950 uppercase block flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                Prior University Coursework & Freshman Eligibility Rule
+              </span>
+              <p class="text-rose-900 leading-relaxed font-medium">${c.college_coursework_policy}</p>
+            </div>
+
+            <div class="p-3.5 bg-amber-50/70 rounded-xl border border-amber-200 text-xs space-y-1.5">
+              <span class="font-bold text-amber-950 block"><i class="fa-regular fa-calendar-days text-amber-700 mr-1"></i>Complete Application & Financial Aid Deadlines:</span>
               <p class="text-slate-900 font-mono font-medium text-xs leading-relaxed">${c.deadlines}</p>
-              <p class="text-[11px] text-slate-700 mt-1.5 pt-1.5 border-t border-amber-200/80"><strong>November SAT Policy:</strong> ${c.nov_sat_policy}</p>
-              <p class="text-[11px] text-emerald-800 mt-1"><strong>Merit Scholarship Deadline:</strong> ${c.merit_deadline || 'Considered automatically with admission'}</p>
+              <div class="pt-1 border-t border-amber-200/80 flex items-center justify-between flex-wrap gap-2 text-[11px]">
+                <span class="text-emerald-800"><strong>Merit Scholarship Deadline:</strong> ${c.merit_deadline || 'Considered automatically with admission'}</span>
+                <span class="text-slate-700"><strong>FinAid Priority:</strong> ${c.finaid_deadline || 'Nov 15 (ED) / Jan 15 (RD)'}</span>
+              </div>
             </div>
           </div>
 
-          <div class="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl text-xs">
-            <div class="font-bold text-rose-950 uppercase mb-1 flex items-center gap-1.5">
-              <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-              Prior University Coursework & Freshman Eligibility Rule
+          <!-- CATEGORY 5: SUPPLEMENTS & EVALUATION FACTORS -->
+          <div id="modal-sec-supplements" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-purple-100 pb-2">
+              <h3 class="text-sm font-extrabold text-purple-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-file-pen text-purple-700"></i>
+                5. Supplemental Essays, Tactical Realities & Multi-Factor Score
+              </h3>
+              <span class="text-[10px] bg-purple-100 text-purple-900 font-bold px-2 py-0.5 rounded">Supplements</span>
             </div>
-            <p class="text-rose-900 leading-relaxed">${c.college_coursework_policy}</p>
-          </div>
-        </div>
 
-        <!-- TAB 2: FINANCIAL AID & ZERO COST -->
-        <div id="tab-aid" class="modal-tab-pane hidden space-y-4">
-          <!-- CDS SECTION H6 INTERNATIONAL AID AUDIT -->
-          <div class="p-4 bg-emerald-900 text-white rounded-xl shadow-sm space-y-2">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">
-                <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Common Data Set (CDS Section H6) International Financial Aid Audit
+            <!-- Factor Score Breakdown Card -->
+            <div class="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-xl shadow-sm space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-300"><i class="fa-solid fa-chart-simple mr-1"></i> Multi-Factor Strategic Score Breakdown</span>
+                <span class="text-sm font-black text-amber-400 font-mono">${c.strategic_rank_display || '#1 Strategic'}</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-center text-xs">
+                <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Aid Generosity (40%)</span>
+                  <span class="font-bold text-emerald-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.aid_generosity : 100}/100</span>
+                </div>
+                <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Academic Prestige (25%)</span>
+                  <span class="font-bold text-blue-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.academic_prestige : 95}/100</span>
+                </div>
+                <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Test Flexibility (15%)</span>
+                  <span class="font-bold text-amber-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.test_optional_leverage : 90}/100</span>
+                </div>
+                <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Visa Safety (10%)</span>
+                  <span class="font-bold text-purple-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.visa_safety : 100}/100</span>
+                </div>
+                <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold block">Cost Efficiency (10%)</span>
+                  <span class="font-bold text-rose-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.cost_efficiency : 90}/100</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-1.5 text-xs">
+              <span class="font-bold text-indigo-950 uppercase tracking-wider block flex items-center gap-1.5">
+                <i class="fa-solid fa-file-pen text-indigo-700"></i>
+                Verified Supplemental Essay Prompts & Portfolios
               </span>
-              <span class="text-[10px] bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded font-mono font-bold">Verified CDS Sec. H6</span>
+              <ul class="text-slate-800 space-y-1 pl-3 font-medium">
+                ${(c.dossier && c.dossier.supplements ? c.dossier.supplements : [
+                  "Common Application Member Questions & Institutional Essays",
+                  "Optional Maker/Research Portfolio submitted via Slideroom"
+                ]).map(s => `<li>• ${s}</li>`).join('')}
+              </ul>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center text-xs">
-              <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
-                <span class="text-[10px] text-emerald-200 uppercase font-bold block">Avg International Aid</span>
-                <span class="font-black text-amber-300 font-mono text-sm">${(c.cds_h6 && c.cds_h6.avg_aid) || '$70,000+/yr'}</span>
-              </div>
-              <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
-                <span class="text-[10px] text-emerald-200 uppercase font-bold block">% Internationals Aided</span>
-                <span class="font-bold text-white font-mono text-sm">${(c.cds_h6 && c.cds_h6.pct_aided) || '65%+'}</span>
-              </div>
-              <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
-                <span class="text-[10px] text-emerald-200 uppercase font-bold block">International Aid Budget</span>
-                <span class="font-bold text-white font-mono text-sm">${(c.cds_h6 && c.cds_h6.total_budget) || '$8M - $25M+'}</span>
-              </div>
-              <div class="p-2.5 bg-emerald-800/80 rounded-lg border border-emerald-700/60">
-                <span class="text-[10px] text-emerald-200 uppercase font-bold block">Scholars Aided Count</span>
-                <span class="font-bold text-emerald-300 font-mono text-sm">${(c.cds_h6 && c.cds_h6.aided_count) || '150+ scholars'}</span>
-              </div>
-            </div>
-            <p class="text-[11px] text-emerald-100 pt-1">
-              <strong>Loan-Free Guarantee:</strong> ${(c.cds_h6 && c.cds_h6.loan_free) || 'Meets 100% demonstrated financial need without loans.'}
-            </p>
-          </div>
 
-          <!-- BANK STATEMENT & COF POLICY -->
-          <div class="p-3.5 bg-teal-50/80 rounded-xl border border-teal-200 text-xs space-y-1">
-            <span class="font-bold text-teal-950 block flex items-center justify-between">
-              <span><i class="fa-solid fa-building-columns text-teal-700 mr-1"></i> Bank Statement & Certification of Finances (COF) Protocol:</span>
-              <span class="text-[10px] bg-teal-200/60 text-teal-900 px-2 py-0.5 rounded font-bold">${c.cof_badge || (c.dossier && c.dossier.cof_badge) || 'Bank Statement Deferred'}</span>
-            </span>
-            <p class="text-teal-950 leading-relaxed font-medium">${c.cof_policy || (c.dossier && c.dossier.cof_policy) || 'DEFERRED (POST-ADMISSION ONLY): Zero bank statements required at application! You only submit financial declarations (COF / ISFAA / Tax Slip declaring $0 EFC). Official bank balance certification is only requested AFTER admission for Form I-20 issuance.'}</p>
-          </div>
-
-          <!-- REQUIRED FINANCIAL AID FORM PROTOCOL -->
-          <div class="p-3.5 bg-blue-50/70 rounded-xl border border-blue-200 text-xs space-y-1">
-            <span class="font-bold text-blue-950 block flex items-center justify-between">
-              <span><i class="fa-solid fa-file-invoice text-blue-700 mr-1"></i> Institutional Financial Aid Form Submission Protocol:</span>
-              <span class="text-[10px] bg-blue-200/60 text-blue-900 px-2 py-0.5 rounded font-bold">${c.finaid_form_badge || (c.dossier && c.dossier.finaid_form_badge) || 'Free ISFAA / CSS'}</span>
-            </span>
-            <p class="text-blue-950 leading-relaxed font-medium">${c.finaid_form_protocol || (c.dossier && c.dossier.finaid_form) || 'Free ISFAA PDF uploaded to portal or CSS Profile with institutional fee waiver code.'}</p>
-          </div>
-
-          <div class="p-4 bg-emerald-50/70 rounded-xl border border-emerald-200">
-            <div class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1"><i class="fa-solid fa-hand-holding-dollar text-emerald-700 mr-1"></i> Full Ride & Financial Aid Policy</div>
-            <p class="text-sm text-slate-800 font-medium leading-relaxed">${c.aid_policy}</p>
-            <div class="mt-2 text-xs font-bold text-emerald-800"><i class="fa-solid fa-shield-halved mr-1"></i> Max Package: ${c.max_aid}</div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-200">
-              <span class="font-bold text-blue-900 block mb-1">Fee Waiver Protocols:</span>
-              <p class="text-blue-950">${c.fee_waiver}</p>
-            </div>
-            <div class="p-3.5 bg-purple-50/60 rounded-xl border border-purple-200">
-              <span class="font-bold text-purple-900 block mb-1">$0 EFC Verification:</span>
-              <p class="text-purple-950">${c.efc_0_covered}</p>
-            </div>
-          </div>
-
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-            <span class="font-bold text-slate-800 block mb-1">Required Financial Documents Checklist:</span>
-            <p class="text-slate-600 leading-relaxed">${c.required_documents}</p>
-          </div>
-        </div>
-
-        <!-- TAB: REDDIT & COMMUNITY INSIDER CONSENSUS -->
-        <div id="tab-reddit" class="modal-tab-pane hidden space-y-4">
-          <div class="p-4 bg-orange-50/80 rounded-xl border border-orange-200">
-            <div class="text-xs font-bold text-orange-950 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-              <i class="fa-brands fa-reddit text-orange-600 text-base"></i>
-              r/IntltoUSA & Bangladeshi Applicant Community Reality Check
-            </div>
-            <p class="text-xs sm:text-sm text-slate-900 font-medium leading-relaxed mt-2">${c.reddit_analysis}</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="font-bold text-slate-800 block mb-1">Need-Blind / Aid Model:</span>
-              <p class="text-emerald-800 font-bold">${c.need_blind_status}</p>
-            </div>
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="font-bold text-slate-800 block mb-1">Official Aid Classification:</span>
-              <p class="text-slate-700">${c.aid_policy}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 3: TESTING & ENGLISH -->
-        <div id="tab-testing" class="modal-tab-pane hidden space-y-4">
-          <div class="p-4 bg-amber-50/70 rounded-xl border border-amber-200">
-            <div class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1"><i class="fa-solid fa-scale-balanced text-amber-700 mr-1"></i> Testing Strategy & Round Recommendation</div>
-            <p class="text-sm font-bold text-slate-900">${c.testing_strategy_round}</p>
-            <p class="text-xs text-amber-950 mt-1.5 leading-relaxed">${c.testing_policy_nuance}</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center text-xs">
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="text-slate-400 uppercase text-[10px] font-bold block">Early Action (EA)</span>
-              <span class="font-bold ${c.ea_test_optional === true ? 'text-emerald-700' : (c.ea_test_optional === false ? 'text-rose-700' : 'text-slate-500')}">
-                ${c.ea_test_optional === true ? 'Test-Optional' : (c.ea_test_optional === false ? 'Test-Required' : 'No EA Round')}
+            <div class="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1.5 text-xs">
+              <span class="font-bold text-amber-950 uppercase tracking-wider block flex items-center gap-1.5">
+                <i class="fa-solid fa-asterisk text-amber-600"></i>
+                Tactical Admissions Realities & Quota Insights
               </span>
+              <ul class="text-amber-950 space-y-1 pl-3 font-medium">
+                ${(c.dossier && c.dossier.tactical ? c.dossier.tactical : [
+                  c.aid_policy || "Meets 100% demonstrated financial need for admitted students."
+                ]).map(t => `<li>* ${t}</li>`).join('')}
+              </ul>
             </div>
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="text-slate-400 uppercase text-[10px] font-bold block">Early Decision (ED)</span>
-              <span class="font-bold ${c.ed_test_optional === true ? 'text-emerald-700' : (c.ed_test_optional === false ? 'text-rose-700' : 'text-slate-500')}">
-                ${c.ed_test_optional === true ? 'Test-Optional' : (c.ed_test_optional === false ? 'Test-Required' : 'No ED Round')}
-              </span>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="text-slate-400 uppercase text-[10px] font-bold block">Regular Decision (RD)</span>
-              <span class="font-bold ${c.rd_test_optional === true ? 'text-emerald-700' : 'text-rose-700'}">
-                ${c.rd_test_optional === true ? 'Test-Optional' : 'Test-Required'}
-              </span>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+              <span class="font-bold text-slate-900 block mb-1"><i class="fa-solid fa-user-tie text-indigo-600 mr-1"></i>Alumni & Admissions Interview Policy:</span>
+              <p class="text-slate-700 font-medium">${c.interview_policy || 'Evaluative or informational interviews available based on alumni availability post-submission.'}</p>
             </div>
           </div>
 
-          <div class="p-3.5 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs space-y-1">
-            <span class="font-bold text-indigo-900 block flex items-center justify-between">
-              <span><i class="fa-solid fa-chart-pie text-indigo-600 mr-1"></i>Official CDS (Sec. C9) Test-Optional Admitted / Enrolled Rate:</span>
-              <span class="text-[10px] bg-indigo-200/60 text-indigo-950 px-2 py-0.5 rounded font-mono font-bold">Verified CDS</span>
-            </span>
-            <p class="text-indigo-950 font-semibold">${c.test_optional_stat || 'Test-Optional Policy Active (~50% Enrolled Without Scores)'}</p>
+          <!-- CATEGORY 6: DHAKA EMBASSY VISA PROTOCOL -->
+          <div id="modal-sec-visa" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-emerald-100 pb-2">
+              <h3 class="text-sm font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-passport text-emerald-700"></i>
+                6. Dhaka Embassy F-1 Visa Protocol (INA § 214(b) Mitigation)
+              </h3>
+              <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded font-mono">${c.visa_safety_index.split('|')[0].trim()}</span>
+            </div>
+
+            <div class="p-3.5 bg-emerald-50/80 rounded-xl border border-emerald-300 text-xs space-y-1">
+              <div class="text-sm font-extrabold text-emerald-900">${c.visa_safety_index.split('|')[0]}</div>
+              <p class="text-emerald-950 leading-relaxed font-medium">${c.visa_safety_index.includes('|') ? c.visa_safety_index.split('|')[1] : ''}</p>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+              <span class="font-bold text-slate-800 block text-xs">Strategic Advice for Bangladeshi Applicants:</span>
+              <p class="text-slate-700 leading-relaxed font-medium">${c.bd_specific_advice}</p>
+              <div class="p-2.5 bg-blue-50/70 border border-blue-200 rounded-lg text-blue-950 text-[11px] leading-relaxed">
+                <strong>Visa Officer Formula:</strong> A full-ride award letter + zero parental contribution on Form I-20 eliminates Section 214(b) financial scrutiny. Articulate your major fit and commitment to return to Bangladesh upon graduation.
+              </div>
+            </div>
           </div>
 
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
-            <span class="font-bold text-slate-800 block">Standardized Test & English Scores Needed:</span>
-            <p class="text-slate-700">${c.sat_det_needed}</p>
-            <p class="text-[11px] text-slate-500 mt-1"><strong>Score Reporting Policy:</strong> ${c.score_policy}</p>
-          </div>
-          <div class="p-3.5 bg-purple-50/80 rounded-xl border border-purple-200 text-xs space-y-1">
-            <span class="font-bold text-purple-950 block flex items-center justify-between">
-              <span><i class="fa-solid fa-language text-purple-700 mr-1"></i> English Proficiency Cutoffs & SAT EBRW Waiver:</span>
-              <span class="text-[10px] bg-purple-200/60 text-purple-900 px-2 py-0.5 rounded font-bold">English Criteria</span>
-            </span>
-            <p class="text-purple-950 font-medium">${c.english_cutoffs_waiver || (c.dossier && c.dossier.english_cutoffs_waiver) || 'DET: 120–130+ | IELTS: 7.0–7.5+ | TOEFL: 95–100+ (SAT EBRW 650+ waives test).'}</p>
+          <!-- CATEGORY 7: REDDIT & COMMUNITY REALITY CHECK -->
+          <div id="modal-sec-reddit" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-orange-100 pb-2">
+              <h3 class="text-sm font-extrabold text-orange-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-brands fa-reddit text-orange-600"></i>
+                7. r/IntltoUSA & Bangladeshi Applicant Community Reality Check
+              </h3>
+              <span class="text-[10px] bg-orange-100 text-orange-900 font-bold px-2 py-0.5 rounded">Community Truth</span>
+            </div>
+
+            <div class="p-4 bg-orange-50/80 rounded-xl border border-orange-200 text-xs">
+              <p class="text-xs sm:text-sm text-slate-900 font-medium leading-relaxed">${c.reddit_analysis}</p>
+            </div>
           </div>
 
-          <div class="p-3.5 bg-rose-50/80 rounded-xl border border-rose-200 text-xs space-y-1">
-            <span class="font-bold text-rose-950 block flex items-center justify-between">
-              <span><i class="fa-solid fa-file-circle-check text-rose-700 mr-1"></i> Special Institutional Requirements:</span>
-              <span class="text-[10px] bg-rose-200/60 text-rose-900 px-2 py-0.5 rounded font-bold">Special Components</span>
-            </span>
-            <p class="text-rose-950 font-medium">${c.special_requirements || (c.dossier && c.dossier.special_requirements) || 'Standard Common Application materials; optional portal video or maker portfolio where applicable.'}</p>
+          <!-- CATEGORY 8: VERIFIED OFFICIAL PORTALS -->
+          <div id="modal-sec-sources" class="scroll-mt-16 space-y-3 pt-2">
+            <div class="flex items-center justify-between border-b border-blue-100 pb-2">
+              <h3 class="text-sm font-extrabold text-blue-950 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-link text-blue-700"></i>
+                8. Verified Official Web Portals & Verification Reference
+              </h3>
+              <span class="text-[10px] bg-blue-100 text-blue-900 font-bold px-2 py-0.5 rounded font-mono">Official Sources</span>
+            </div>
+
+            <div class="p-3.5 bg-indigo-50/60 rounded-xl border border-indigo-200 space-y-2.5">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <a href="${c.admissions_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-2.5 rounded-xl bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white transition font-bold text-xs shadow-sm">
+                  <span>Admissions Portal</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+                <a href="${c.finaid_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-2.5 rounded-xl bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white transition font-bold text-xs shadow-sm">
+                  <span>Financial Aid Portal</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+                <a href="${c.testing_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-2.5 rounded-xl bg-white border border-purple-200 text-purple-700 hover:bg-purple-600 hover:text-white transition font-bold text-xs shadow-sm">
+                  <span>Testing Policy</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+              <span class="font-bold text-slate-800 block">Common Data Set (CDS) Reference:</span>
+              <p class="text-slate-600 font-mono text-[11px]">${c.cds_source}</p>
+            </div>
           </div>
+
         </div>
 
-        <!-- TAB 4: DHAKA EMBASSY VISA -->
-        <div id="tab-visa" class="modal-tab-pane hidden space-y-4">
-          <div class="p-4 bg-emerald-50/80 rounded-xl border border-emerald-300">
-            <div class="text-xs font-bold text-emerald-950 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-              <i class="fa-solid fa-passport text-emerald-700"></i>
-              Dhaka Embassy F-1 Visa Safety Rating
-            </div>
-            <div class="text-base font-extrabold text-emerald-900 mt-1">${c.visa_safety_index.split('|')[0]}</div>
-            <p class="text-xs text-emerald-950 mt-1 leading-relaxed">${c.visa_safety_index.includes('|') ? c.visa_safety_index.split('|')[1] : ''}</p>
+        <!-- Modal Bottom Bar -->
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-6 sticky bottom-0 bg-white/95 backdrop-blur py-2">
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-600 font-bold"><i class="fa-solid fa-shield-halved mr-1"></i>Fall 2027 Verified</span>
+            <span>•</span>
+            <button onclick="jumpToModalSec('modal-sec-aid')" class="hover:text-indigo-600 font-semibold">Back to Top ↑</button>
           </div>
-
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
-            <span class="font-bold text-slate-800 text-sm block">Strategic Advice for Bangladeshi Applicants:</span>
-            <p class="text-slate-700 leading-relaxed font-medium">${c.bd_specific_advice}</p>
-            <div class="p-3 bg-blue-50/70 border border-blue-200 rounded-lg text-blue-950 text-[11px] leading-relaxed mt-2">
-              <strong>Visa Officer Formula:</strong> A full-ride award letter + zero parental contribution on Form I-20 eliminates Section 214(b) financial scrutiny. Be ready to articulate your major fit and commitment to return to Bangladesh upon graduation.
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: SUPPLEMENTS & TACTICAL ADMISSION REALITIES -->
-        <div id="tab-supps" class="modal-tab-pane hidden space-y-4">
-          <!-- Factor Score Breakdown Card -->
-          <div class="p-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-xl shadow-sm space-y-2">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-indigo-300"><i class="fa-solid fa-chart-simple mr-1"></i> Multi-Factor Strategic Score Breakdown</span>
-              <span class="text-sm font-black text-amber-400 font-mono">${c.strategic_rank_display || '#1 Strategic'}</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-center text-xs">
-              <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
-                <span class="text-[10px] text-slate-400 uppercase font-bold block">Aid Generosity (40%)</span>
-                <span class="font-bold text-emerald-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.aid_generosity : 100}/100</span>
-              </div>
-              <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
-                <span class="text-[10px] text-slate-400 uppercase font-bold block">Academic Prestige (25%)</span>
-                <span class="font-bold text-blue-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.academic_prestige : 95}/100</span>
-              </div>
-              <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
-                <span class="text-[10px] text-slate-400 uppercase font-bold block">Test Flexibility (15%)</span>
-                <span class="font-bold text-amber-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.test_optional_leverage : 90}/100</span>
-              </div>
-              <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
-                <span class="text-[10px] text-slate-400 uppercase font-bold block">Visa Safety (10%)</span>
-                <span class="font-bold text-purple-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.visa_safety : 100}/100</span>
-              </div>
-              <div class="p-2 bg-slate-800/80 rounded-lg border border-slate-700">
-                <span class="text-[10px] text-slate-400 uppercase font-bold block">Cost Efficiency (10%)</span>
-                <span class="font-bold text-rose-400 font-mono text-sm">${c.factor_scores ? c.factor_scores.cost_efficiency : 90}/100</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Institutional Supplements -->
-          <div class="p-4 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-2">
-            <div class="text-xs font-bold text-indigo-950 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-file-pen text-indigo-700"></i>
-              Verified Supplemental Essay Requirements & Portfolios
-            </div>
-            <ul class="text-xs text-slate-800 space-y-1.5 pl-3">
-              ${(c.dossier && c.dossier.supplements ? c.dossier.supplements : [
-                "Common Application Member Questions & Institutional Essays",
-                "Optional Maker/Research Portfolio submitted via Slideroom"
-              ]).map(s => `<li>• ${s}</li>`).join('')}
-            </ul>
-          </div>
-
-          <!-- Tactical Admission Realities -->
-          <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
-            <div class="text-xs font-bold text-amber-950 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-asterisk text-amber-600"></i>
-              Tactical Admissions Realities & Quota Insights
-            </div>
-            <ul class="text-xs text-amber-950 space-y-1.5 pl-3">
-              ${(c.dossier && c.dossier.tactical ? c.dossier.tactical : [
-                c.aid_policy || "Meets 100% demonstrated financial need for admitted students."
-              ]).map(t => `<li>* ${t}</li>`).join('')}
-            </ul>
-          </div>
-
-          <!-- Interview & CDS Analysis -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="font-bold text-slate-900 block mb-1"><i class="fa-solid fa-user-tie text-indigo-600 mr-1"></i> Interview Policy:</span>
-              <p class="text-slate-700">${c.interview_policy || 'Evaluative or informational interviews available based on alumni availability post-submission.'}</p>
-            </div>
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span class="font-bold text-slate-900 block mb-1"><i class="fa-solid fa-chart-pie text-emerald-600 mr-1"></i> CDS Section C9 Reality:</span>
-              <p class="text-slate-700">${c.cds_analysis_detail || (c.test_optional_stat || 'Test-Optional active (CDS Section C9 verified).')}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 5: VERIFIED SOURCES & OFFICIAL PORTALS -->
-        <div id="tab-sources" class="modal-tab-pane hidden space-y-4">
-          <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-200 space-y-3">
-            <div class="text-xs font-bold text-indigo-950 uppercase tracking-wider">
-              <i class="fa-solid fa-link text-indigo-700 mr-1"></i> Verified Institutional Web Portals
-            </div>
-            <p class="text-xs text-indigo-900 leading-relaxed">
-              Every link below is verified directly against official university domains and admissions offices for the Fall 2027 admissions cycle.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-              <a href="${c.admissions_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-3 rounded-xl bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white transition font-bold text-xs shadow-sm">
-                <span>Admissions Portal</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-
-              <a href="${c.finaid_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-3 rounded-xl bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white transition font-bold text-xs shadow-sm">
-                <span>Financial Aid Portal</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-
-              <a href="${c.testing_url}" target="_blank" rel="noopener" class="flex items-center justify-between p-3 rounded-xl bg-white border border-purple-200 text-purple-700 hover:bg-purple-600 hover:text-white transition font-bold text-xs shadow-sm">
-                <span>Testing Policy</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5">
-            <span class="font-bold text-slate-800 block">Verification & Data Source Reference:</span>
-            <p class="text-slate-600 font-mono text-[11px]">${c.cds_source}</p>
-            <p class="text-[11px] text-slate-500">Official College Board CEEB School Code for SAT & CSS Profile submission: <strong class="font-mono text-slate-800">${c.cb_code || 'N/A'}</strong></p>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-4">
-          <div><i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i>Fall 2027 Verified</div>
-          <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold transition">Close</button>
+          <button onclick="closeModal()" class="px-5 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold transition shadow-sm">
+            Close Profile
+          </button>
         </div>
       `;
 
       modal.classList.remove('hidden');
-    }
-
-    function switchModalTab(tabId) {
-      document.querySelectorAll('.modal-tab-pane').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.modal-tab-btn').forEach(btn => {
-        btn.classList.remove('tab-active');
-        btn.classList.add('text-slate-500');
-      });
-
-      document.getElementById(tabId).classList.remove('hidden');
-      const activeBtn = document.getElementById(`btn-${tabId}`);
-      if (activeBtn) {
-        activeBtn.classList.add('tab-active');
-        activeBtn.classList.remove('text-slate-500');
-      }
     }
 
     function closeModal() {
