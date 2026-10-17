@@ -21,7 +21,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Patrick+Hand&display=swap');
-    
+    *, ::before, ::after { box-sizing: border-box; }
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
     .font-notebook { font-family: 'Patrick Hand', cursive, sans-serif; }
     .font-mono-code { font-family: 'JetBrains Mono', monospace; }
@@ -330,18 +336,18 @@
     </section>
 
     <!-- RESULTS BAR -->
-    <div id="actionToolbar" class="flex items-center justify-between text-xs text-slate-600 bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex-wrap gap-2">
-      <div class="flex items-center gap-2">
+    <div id="actionToolbar" class="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 bg-white p-3 rounded-xl border border-slate-200 shadow-sm gap-2.5 w-full max-w-full">
+      <div class="flex items-center justify-between gap-2 w-full sm:w-auto">
         <span id="resultsCount" class="font-bold text-slate-800 text-sm">Showing 160 of 160 institutions</span>
         <span id="shortlistActiveNotice" class="hidden text-amber-800 font-bold bg-amber-100 border border-amber-300 px-2 py-0.5 rounded text-[11px]">
-          <i class="fa-solid fa-star text-amber-500 mr-1"></i>Selected List Filter Active
+          <i class="fa-solid fa-star text-amber-500 mr-1"></i>Selected Active
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 w-full sm:w-auto">
         <span class="text-slate-500 font-medium hidden sm:inline">Sort:</span>
-        <select id="sortSelect" onchange="filterAndRender()" class="py-1 px-2.5 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-700">
-          <option value="STRATEGIC_MATCH" selected>🎯 Strategic Match (Prestige + Aid + Test-Opt + Visa)</option>
+        <select id="sortSelect" onchange="filterAndRender()" class="w-full sm:w-auto py-1.5 px-2.5 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-700 outline-none max-w-full truncate">
+          <option value="STRATEGIC_MATCH" selected>🎯 Strategic Match (Prestige + Aid + Test + Visa)</option>
           <option value="US_NEWS_ASC">🏛️ U.S. News Ranking (Top Ranked First)</option>
           <option value="WORLD_RANK_ASC">🌐 Overall World Ranking (QS / Global)</option>
           <option value="TEST_OPT_DESC">📊 Test-Optional Friendly (% Admitted Test-Free)</option>

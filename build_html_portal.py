@@ -33,6 +33,13 @@ html_template = """<!DOCTYPE html>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+    *, ::before, ::after { box-sizing: border-box; }
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
     body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
     .badge-need-blind { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
     .badge-need-aware { background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
@@ -49,71 +56,73 @@ html_template = """<!DOCTYPE html>
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col w-full max-w-full overflow-x-hidden">
 
   <!-- Top Announcement Banner -->
-  <div class="bg-gradient-to-r from-emerald-700 via-teal-800 to-indigo-900 text-white text-xs py-2 px-4 shadow-sm">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-      <div class="flex items-center gap-2">
-        <span class="inline-flex items-center justify-center bg-white/20 text-white px-2 py-0.5 rounded text-[11px] font-bold">🇧🇩 Bangladesh to USA</span>
-        <span class="font-medium">Fall 2027 Undergrad Admissions Master Directory • 100% Demonstrated Need, Need-Blind & Merit Full-Rides</span>
+  <div class="bg-gradient-to-r from-emerald-700 via-teal-800 to-indigo-900 text-white text-xs py-2 px-3 sm:px-4 shadow-sm w-full">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-start">
+        <span class="inline-flex items-center justify-center bg-white/20 text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-bold">🇧🇩 Bangladesh to USA</span>
+        <span class="font-medium text-[11px] sm:text-xs">Fall 2027 Undergrad Admissions Master Directory • 100% Need & Merit Full-Rides</span>
       </div>
-      <div class="flex items-center gap-4 text-[11px]">
-        <span><i class="fa-solid fa-shield-halved text-emerald-300 mr-1"></i>Dhaka Embassy F-1 Safe</span>
-        <span><i class="fa-solid fa-check-double text-blue-300 mr-1"></i>Verified 2025–26 CEEB & Sources</span>
-        <a href="#playbookModal" onclick="openPlaybook()" class="underline hover:text-emerald-200 font-semibold cursor-pointer">BD Applicant Playbook ↗</a>
+      <div class="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-[11px] flex-wrap justify-center">
+        <span><i class="fa-solid fa-shield-halved text-emerald-300 mr-1"></i>Dhaka F-1 Safe</span>
+        <span><i class="fa-solid fa-check-double text-blue-300 mr-1"></i>CDS Verified</span>
+        <a href="#playbookModal" onclick="openPlaybook()" class="underline hover:text-emerald-200 font-semibold cursor-pointer">BD Playbook ↗</a>
       </div>
     </div>
   </div>
 
   <!-- Header -->
-  <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-40 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+  <header class="w-full max-w-full bg-slate-900 text-white shadow-xl sticky top-0 z-40 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-4">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
         <div>
-          <div class="flex items-center gap-2.5">
-            <span class="text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1">
               <span class="text-emerald-400">BD</span>to<span class="text-indigo-400">USA</span>
-              <span class="text-xs bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 px-2 py-0.5 rounded-full font-bold ml-1.5">Fall 2027 Master Navigator</span>
+              <span class="text-[10px] sm:text-xs bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 px-2 py-0.5 rounded-full font-bold ml-1">Fall 2027 Master Navigator</span>
             </span>
-            <span class="hidden sm:inline-block text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold">160 Curated Institutions</span>
+            <span class="text-[10px] sm:text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">160 Curated Institutions</span>
           </div>
-          <p class="text-slate-300 text-xs sm:text-sm mt-1">The definitive directory of U.S. colleges offering Full Rides ($0 EFC), Full Tuition & Need-Blind aid for Bangladeshi students</p>
+          <p class="text-slate-300 text-[11px] sm:text-xs mt-1">The definitive directory of U.S. colleges offering Full Rides ($0 EFC), Full Tuition & Need-Blind aid for Bangladeshi students</p>
         </div>
 
         <!-- Action Tools -->
-        <div class="flex flex-wrap items-center gap-2.5">
-          <button onclick="openPlaybook()" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow transition">
-            <i class="fa-solid fa-book-open"></i> BD Applicant Playbook
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5">
+          <button onclick="openPlaybook()" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shadow transition">
+            <i class="fa-solid fa-book-open"></i> BD Playbook
           </button>
           
-          <button id="shortlistToggleBtn" onclick="toggleShortlistView()" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-xs font-bold px-3 py-2 rounded-xl transition shadow">
-            <i class="fa-solid fa-star"></i> <span id="shortlistLabel">My Shortlist (0)</span>
+          <button id="shortlistToggleBtn" onclick="toggleShortlistView()" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition shadow">
+            <i class="fa-solid fa-star"></i> <span id="shortlistLabel">Shortlist (0)</span>
           </button>
 
-          <a href="University_Application_Dossier.html" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow transition">
-            <i class="fa-solid fa-book-bookmark"></i> Application Dossier
+          <a href="University_Application_Dossier.html" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shadow transition">
+            <i class="fa-solid fa-book-bookmark"></i> Dossier
           </a>
 
-          <a href="BDtoUSA_Fall_2027_Full_Ride_Admissions_Guide.pdf" download class="inline-flex items-center gap-1.5 bg-rose-700 hover:bg-rose-600 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow transition">
+          <a href="BDtoUSA_Fall_2027_Full_Ride_Admissions_Guide.pdf" download class="inline-flex items-center gap-1.5 bg-rose-700 hover:bg-rose-600 text-white text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow transition">
             <i class="fa-solid fa-file-pdf"></i> PDF Guide
           </a>
 
-          <a href="US_Colleges_Fall_2027_Full_Ride_BDtoUSA.xlsx" download class="inline-flex items-center gap-1.5 bg-indigo-700 hover:bg-indigo-600 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow transition">
-            <i class="fa-solid fa-file-excel"></i> Excel (.xlsx)
+          <a href="US_Colleges_Fall_2027_Full_Ride_BDtoUSA.xlsx" download class="inline-flex items-center gap-1.5 bg-indigo-700 hover:bg-indigo-600 text-white text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow transition">
+            <i class="fa-solid fa-file-excel"></i> Excel
           </a>
 
-          <a href="US_Colleges_Fall_2027_Full_Ride_BDtoUSA.csv" download class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-xl shadow transition">
+          <a href="US_Colleges_Fall_2027_Full_Ride_BDtoUSA.csv" download class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow transition">
             <i class="fa-solid fa-file-csv"></i> CSV
           </a>
 
-          <button onclick="copyShareLink()" id="shareBtn" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition">
-            <i class="fa-solid fa-share-nodes"></i> <span id="shareBtnText">Share Portal</span>
+          <button onclick="copyShareLink()" id="shareBtn" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl shadow transition">
+            <i class="fa-solid fa-share-nodes"></i> <span id="shareBtnText">Share</span>
           </button>
 
-          <button onclick="window.print()" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-2.5 py-2 rounded-xl transition">
+          <button onclick="window.print()" class="hidden sm:inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-2.5 py-2 rounded-xl transition">
             <i class="fa-solid fa-print"></i>
           </button>
         </div>
@@ -122,7 +131,7 @@ html_template = """<!DOCTYPE html>
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6 flex-1 w-full max-w-full overflow-hidden sm:overflow-visible space-y-5 sm:space-y-6">
 
     <!-- CRITICAL TIMELINE & DEADLINE ALERT BANNER -->
     <section class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-indigo-500/30">
@@ -325,19 +334,19 @@ html_template = """<!DOCTYPE html>
     </section>
 
     <!-- Results Toolbar & View Switcher -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-600 bg-slate-100 p-3 rounded-xl border border-slate-200">
-      <div class="flex items-center gap-2">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-slate-600 bg-slate-100 p-3 rounded-xl border border-slate-200 w-full max-w-full">
+      <div class="flex items-center justify-between gap-2 w-full md:w-auto">
         <span id="resultsCount" class="font-bold text-slate-800 text-sm">Showing 160 of 160 institutions</span>
-        <span id="shortlistNotice" class="hidden text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
-          <i class="fa-solid fa-star mr-1"></i>Showing Bookmarked Only
+        <span id="shortlistNotice" class="hidden text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded border border-amber-300 text-[11px]">
+          <i class="fa-solid fa-star mr-1"></i>Bookmarked
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-1.5">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+        <div class="flex items-center gap-1.5 w-full sm:w-auto flex-1 sm:flex-initial">
           <span class="text-slate-500 font-semibold hidden lg:inline">Sort:</span>
-          <select id="portalSortSelect" onchange="filterAndRender()" class="py-1 px-2.5 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-700 shadow-sm outline-none">
-            <option value="STRATEGIC_MATCH" selected>🎯 Strategic Match (Prestige + Aid + Test-Opt + Visa)</option>
+          <select id="portalSortSelect" onchange="filterAndRender()" class="w-full py-2 sm:py-1 px-2.5 border border-slate-300 rounded-lg text-xs font-semibold bg-white text-slate-700 shadow-sm outline-none max-w-full truncate">
+            <option value="STRATEGIC_MATCH" selected>🎯 Strategic Match (Prestige + Aid + Test + Visa)</option>
             <option value="US_NEWS_ASC">🏛️ U.S. News Ranking (Top Ranked First)</option>
             <option value="WORLD_RANK_ASC">🌐 Overall World Ranking (QS / Global)</option>
             <option value="TEST_OPT_DESC">📊 Test-Optional Friendly (% Admitted Test-Free)</option>
@@ -348,16 +357,17 @@ html_template = """<!DOCTYPE html>
           </select>
         </div>
 
-        <span class="text-slate-500 font-semibold hidden md:inline">View:</span>
-        <div class="inline-flex rounded-lg border border-slate-300 bg-white p-0.5 shadow-sm">
-          <button id="viewTableBtn" onclick="setViewMode('table')" class="px-2.5 py-1 rounded-md text-xs font-bold text-slate-600 hover:text-indigo-600 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-table-list"></i> Table View
-          </button>
-          <button id="viewCardBtn" onclick="setViewMode('card')" class="px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-600 text-white transition flex items-center gap-1.5">
-            <i class="fa-solid fa-grip"></i> Card Grid View
-          </button>
+        <div class="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+          <div class="inline-flex rounded-lg border border-slate-300 bg-white p-0.5 shadow-sm w-full sm:w-auto justify-center">
+            <button id="viewTableBtn" onclick="setViewMode('table')" class="flex-1 sm:flex-initial px-3 py-1.5 sm:py-1 rounded-md text-xs font-bold text-slate-600 hover:text-indigo-600 transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-table-list"></i> Table View
+            </button>
+            <button id="viewCardBtn" onclick="setViewMode('card')" class="flex-1 sm:flex-initial px-3 py-1.5 sm:py-1 rounded-md text-xs font-bold bg-indigo-600 text-white transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-grip"></i> Card Grid View
+            </button>
+          </div>
+          <button onclick="clearShortlist()" id="clearShortlistBtn" class="hidden text-[11px] text-slate-500 hover:text-rose-600 underline ml-2 whitespace-nowrap">Clear</button>
         </div>
-        <button onclick="clearShortlist()" id="clearShortlistBtn" class="hidden text-[11px] text-slate-500 hover:text-rose-600 underline ml-2">Clear Shortlist</button>
       </div>
     </div>
 
@@ -932,7 +942,7 @@ html_template = """<!DOCTYPE html>
       list.forEach(c => {
         const isBookmarked = shortlistedIds.includes(c.name);
         const card = document.createElement('div');
-        card.className = 'bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between';
+        card.className = 'bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between w-full max-w-full overflow-hidden';
         
         let aidBadge = c.aid_policy.toLowerCase().includes('need-blind') 
           ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold badge-need-blind">Need-Blind</span>'
@@ -941,10 +951,10 @@ html_template = """<!DOCTYPE html>
         const isVisaTop = c.visa_safety_index.includes('98%') || c.visa_safety_index.includes('Tier 1');
 
         card.innerHTML = `
-          <div class="space-y-3">
+          <div class="space-y-3 w-full max-w-full">
             <div class="flex items-start justify-between gap-2">
-              <div>
-                <div class="flex items-center gap-1.5 flex-wrap">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1 sm:gap-1.5 flex-wrap">
                   <span class="text-[10px] font-black px-1.5 py-0.5 rounded bg-slate-900 text-white font-mono shadow-sm">
                     ${c.strategic_rank_display || '#1 Strategic'}
                   </span>
@@ -957,10 +967,10 @@ html_template = """<!DOCTYPE html>
                   ${aidBadge}
                   <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 font-bold">CEEB: ${c.cb_code || 'N/A'}</span>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-1 hover:text-indigo-600 cursor-pointer" onclick="openModalById('${c.name.replace(/'/g, "\\'")}')">${c.name}</h3>
-                <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>${c.location} • ${c.region}</p>
+                <h3 class="text-base font-bold text-slate-900 mt-1 hover:text-indigo-600 cursor-pointer break-words" onclick="openModalById('${c.name.replace(/'/g, "\\'")}')">${c.name}</h3>
+                <p class="text-xs text-slate-500 truncate"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>${c.location} • ${c.region}</p>
               </div>
-              <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-lg transition ${isBookmarked ? 'text-amber-400 hover:text-amber-500 scale-110' : 'text-slate-300 hover:text-amber-400'}">
+              <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-lg transition flex-shrink-0 ${isBookmarked ? 'text-amber-400 hover:text-amber-500 scale-110' : 'text-slate-300 hover:text-amber-400'}">
                 <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-star"></i>
               </button>
             </div>
@@ -1001,11 +1011,11 @@ html_template = """<!DOCTYPE html>
 
             <div class="p-2 bg-amber-50/70 rounded-lg border border-amber-200 text-[11px] space-y-0.5">
               <span class="text-amber-900 uppercase text-[9px] font-bold block"><i class="fa-regular fa-calendar-days text-amber-700 mr-1"></i>All Deadlines (App & Aid)</span>
-              <span class="font-mono text-slate-800 text-[10.5px] block leading-snug">${c.deadlines}</span>
+              <span class="font-mono text-slate-800 text-[10.5px] block leading-snug break-words">${c.deadlines}</span>
             </div>
           </div>
 
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs flex-wrap gap-2">
             <div class="flex items-center gap-2">
               <a href="${c.admissions_url}" target="_blank" rel="noopener" class="text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1">
                 Admissions <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
@@ -1043,27 +1053,27 @@ html_template = """<!DOCTYPE html>
 
       content.innerHTML = `
         <!-- Modal Top Bar -->
-        <div class="flex items-start justify-between border-b border-slate-100 pb-4 mb-4">
-          <div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-mono shadow-sm"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i>${c.strategic_rank_display || '#1 Strategic'}</span>
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-900 border border-blue-200 font-mono">🏛️ ${c.us_news_display || 'US News Top Tier'}</span>
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-900 border border-purple-200 font-mono">🌐 ${c.world_rank_display || 'QS World Top Tier'}</span>
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">${c.tier_category}</span>
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300"><i class="fa-solid fa-scale-balanced mr-1"></i>${c.need_blind_status}</span>
-              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">CEEB: ${c.cb_code || 'N/A'}</span>
-              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${c.region} Region</span>
+        <div class="flex items-start justify-between border-b border-slate-100 pb-4 mb-4 gap-2">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+              <span class="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-mono shadow-sm"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i>${c.strategic_rank_display || '#1 Strategic'}</span>
+              <span class="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-900 border border-blue-200 font-mono">🏛️ ${c.us_news_display || 'US News Top Tier'}</span>
+              <span class="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-900 border border-purple-200 font-mono">🌐 ${c.world_rank_display || 'QS World Top Tier'}</span>
+              <span class="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">${c.tier_category}</span>
+              <span class="text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300"><i class="fa-solid fa-scale-balanced mr-1"></i>${c.need_blind_status}</span>
+              <span class="text-[11px] sm:text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">CEEB: ${c.cb_code || 'N/A'}</span>
+              <span class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${c.region} Region</span>
             </div>
-            <h2 class="text-2xl font-black text-slate-900 mt-2">${c.name}</h2>
-            <p class="text-slate-500 text-xs sm:text-sm mt-0.5"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${c.location} • ${c.type}</p>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2 break-words">${c.name}</h2>
+            <p class="text-slate-500 text-xs sm:text-sm mt-0.5 break-words"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${c.location} • ${c.type}</p>
           </div>
-          <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-2xl transition ${isBookmarked ? 'text-amber-400 hover:text-amber-500' : 'text-slate-300 hover:text-amber-400'}" title="Toggle Bookmark">
+          <button onclick="toggleBookmark('${c.name.replace(/'/g, "\\'")}', event)" class="text-2xl transition flex-shrink-0 ${isBookmarked ? 'text-amber-400 hover:text-amber-500' : 'text-slate-300 hover:text-amber-400'}" title="Toggle Bookmark">
             <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-star"></i>
           </button>
         </div>
 
         <!-- Sticky Quick-Jump Navigation Bar -->
-        <div class="sticky top-0 bg-white/95 backdrop-blur-md z-30 py-2.5 mb-6 border-b border-slate-200 flex items-center gap-2 overflow-x-auto text-xs font-bold text-slate-600">
+        <div class="sticky top-0 bg-white/95 backdrop-blur-md z-30 py-2 sm:py-2.5 mb-5 sm:mb-6 border-b border-slate-200 flex items-center gap-1.5 sm:gap-2 overflow-x-auto text-xs font-bold text-slate-600 w-full max-w-full no-scrollbar" style="-webkit-overflow-scrolling: touch; scrollbar-width: none;">
           <span class="text-[11px] uppercase tracking-wider text-slate-400 mr-1 hidden sm:inline"><i class="fa-solid fa-compass mr-1"></i>Jump:</span>
           <button onclick="jumpToModalSec('modal-sec-aid')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 transition whitespace-nowrap flex items-center gap-1 border border-slate-200 text-xs">
             <i class="fa-solid fa-hand-holding-dollar text-emerald-600"></i> Aid & CDS H6
